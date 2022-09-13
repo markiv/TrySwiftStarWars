@@ -31,3 +31,41 @@ extension URL: ExpressibleByStringLiteral {
         self.init(string: value)!
     }
 }
+
+extension Collection where Element == URL {
+    /// Concurrently gets a collection of a generic Decodable type from a collection of URLs.
+    /// This version will fail if any sub-task fails.
+    func getAll<T: Decodable>() async throws -> [T] {
+        var results = [T]()
+        try await withThrowingTaskGroup(of: T.self) { group in
+            forEach { url in
+                group.addTask {
+                    try await T(from: url)
+                }
+            }
+            for try await value in group {
+                results.append(value)
+            }
+        }
+        return results
+    }
+
+    /// Concurrently gets a collection of a generic Decodable type from a collection of URLs.
+    /// This version will ignore any failures, returning as many elements as possible.
+    func getAllPossible<T: Decodable>() async -> [T] {
+        var results = [T]()
+        await withTaskGroup(of: T?.self) { group in
+            forEach { url in
+                group.addTask {
+                    try? await T(from: url)
+                }
+            }
+            for await value in group {
+                if let value = value {
+                    results.append(value)
+                }
+            }
+        }
+        return results
+    }
+}

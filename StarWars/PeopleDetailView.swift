@@ -30,17 +30,7 @@ struct PeopleDetailView: View {
         }
         .navigationTitle(people.name)
         .task {
-            films = []
-            try? await withThrowingTaskGroup(of: Film.self) { group in
-                people.films.forEach { url in
-                    group.addTask {
-                        try await Film(from: url)
-                    }
-                }
-                for try await film in group {
-                    films?.append(film)
-                }
-            }
+            films = await people.films.getAllPossible()
         }
     }
 }

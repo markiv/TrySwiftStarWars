@@ -69,3 +69,15 @@ extension Collection where Element == URL {
         return results
     }
 }
+
+#if DEBUG
+extension Decodable {
+    init(mock name: String) {
+        let url = Bundle.main.url(forResource: name, withExtension: "json")!
+        let data = try! Data(contentsOf: url)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        self = try! decoder.decode(Self.self, from: data)
+    }
+}
+#endif

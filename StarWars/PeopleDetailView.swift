@@ -14,16 +14,21 @@ struct PeopleDetailView: View {
     var body: some View {
         List {
             Section {
-                DetailItem(label: "Gender", value: people.gender)
-                DetailItem(label: "Mass", value: people.mass)
-                DetailItem(label: "Birth Year", value: people.birthYear)
-                DetailItem(label: "Eye Color", value: people.eyeColor)
-                DetailItem(label: "Skin Color", value: people.skinColor)
+                ListDetailItem(label: "Name", value: people.name)
+                ListDetailItem(label: "Birth", value: people.birthYear)
+                ListDetailItem(label: "Gender", value: people.gender)
+                ListDetailItem(label: "Height", value: people.height)
+                ListDetailItem(label: "Mass", value: people.mass)
+                ListDetailItem(label: "Eye Color", value: people.eyeColor)
+                ListDetailItem(label: "Hair Color", value: people.hairColor)
+                ListDetailItem(label: "Skin Color", value: people.skinColor)
             }
             if let films, !films.isEmpty {
                 Section("Films") {
                     ForEach(films) { film in
-                        Text(film.title)
+                        NavigationLink(film.title) {
+                            FilmDetailView(film: film)
+                        }
                     }
                 }
             }
@@ -35,43 +40,12 @@ struct PeopleDetailView: View {
     }
 }
 
-struct DetailItem: View {
-    let label: LocalizedStringKey
-    let value: String?
-
-    var body: some View {
-        if let value = value {
-            HStack {
-                Text(label)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text(value)
-            }
-        }
-    }
-}
-
+#if DEBUG
 struct PeopleDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            PeopleDetailView(people: People(
-                name: "Sample Skywalker",
-                height: "1",
-                mass: "1",
-                hairColor: "Blond",
-                skinColor: "White",
-                eyeColor: "Green",
-                birthYear: "1",
-                gender: "Male",
-                homeworld: "://",
-                films: [],
-                species: [],
-                vehicles: [],
-                starships: [],
-                created: "",
-                edited: "",
-                url: "://"
-            ))
+            PeopleDetailView(people: People(mock: "people1"))
         }
     }
 }
+#endif

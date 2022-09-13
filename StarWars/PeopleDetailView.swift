@@ -30,14 +30,17 @@ struct PeopleDetailView: View {
         }
         .navigationTitle(people.name)
         .task {
-            async let film0 = Film(from: people.films[0])
-            async let film1 = Film(from: people.films[1])
-            async let film2 = Film(from: people.films[2])
-            do {
-                films = try await [film0, film1, film2]
-                print(self.films)
-            } catch {
-                print(error)
+            films = []
+            try? await withThrowingTaskGroup(of: Film.self) { group in
+                people.films.forEach { url in
+                    group.addTask {
+                        async let film = Film(from: url)
+                        return try await film
+                    }
+                }
+                for try await film in group {
+                    films?.append(film)
+                }
             }
         }
     }

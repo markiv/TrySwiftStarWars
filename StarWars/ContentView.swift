@@ -29,12 +29,16 @@ struct ContentView: View {
 }
 
 extension Decodable {
-    init(from url: URL) async throws {
-        let (data, response) = try await URLSession.shared.data(from: url)
+    init(from request: URLRequest) async throws {
+        let (data, response) = try await URLSession.shared.data(for: request)
         if let response = response as? HTTPURLResponse, response.statusCode >= 400 {
             throw URLError(.badServerResponse)
         }
         self = try JSONDecoder().decode(Self.self, from: data)
+    }
+
+    init(from url: URL) async throws {
+        try await self.init(from: URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad))
     }
 }
 

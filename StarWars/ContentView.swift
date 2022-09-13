@@ -19,7 +19,7 @@ struct ContentView: View {
             ProgressView("Loading...")
                 .task {
                     do {
-                        people = try await People.get(from: URL(string: "https://swapi.dev/api/people/1/")!)
+                        people = try await People(from: URL(string: "https://swapi.dev/api/people/1/")!)
                     } catch {
                         print(error)
                     }
@@ -29,9 +29,9 @@ struct ContentView: View {
 }
 
 extension Decodable {
-    static func get(from url: URL) async throws -> Self {
+    init(from url: URL) async throws {
         let (data, _) = try await URLSession.shared.data(from: url)
-        return try JSONDecoder().decode(Self.self, from: data)
+        self = try JSONDecoder().decode(Self.self, from: data)
     }
 }
 

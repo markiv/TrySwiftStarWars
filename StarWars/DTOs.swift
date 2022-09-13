@@ -25,10 +25,25 @@ struct PeoplePage: Decodable {
     let results: [People]
 }
 
+struct Film: Codable {
+    let title: String
+    let created, director, edited: String
+    let episodeId: Int
+    let openingCrawl: String
+    let producer, releaseDate: String
+    let characters: [URL]
+    let planets: [URL]
+    let species, starships: [URL]
+    let vehicles: [URL]
+    let url: URL
+}
+
 extension People: Identifiable {
-    var id: URL {
-        url
-    }
+    var id: URL { url }
+}
+
+extension Film: Identifiable {
+    var id: URL { url }
 }
 
 extension Decodable {

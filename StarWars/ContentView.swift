@@ -15,7 +15,9 @@ struct ContentView: View {
             if !viewModel.people.isEmpty {
                 List {
                     ForEach(viewModel.people) { people in
-                        Text(people.name)
+                        NavigationLink(destination: PeopleDetailView(people: people)) {
+                            Text(people.name)
+                        }
                     }
                 }
                 .navigationTitle("Star Wars People")

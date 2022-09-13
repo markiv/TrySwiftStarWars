@@ -15,6 +15,7 @@
 		AC0C673428D09FF50005DD4E /* StarWarsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0C673328D09FF50005DD4E /* StarWarsUITests.swift */; };
 		AC0C673628D09FF50005DD4E /* StarWarsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0C673528D09FF50005DD4E /* StarWarsUITestsLaunchTests.swift */; };
 		AC0C674328D0A0140005DD4E /* DTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0C674228D0A0140005DD4E /* DTOs.swift */; };
+		AC1A2B8428D0BD9500F3AD7C /* PeopleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1A2B8328D0BD9500F3AD7C /* PeopleDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		AC0C673328D09FF50005DD4E /* StarWarsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarWarsUITests.swift; sourceTree = "<group>"; };
 		AC0C673528D09FF50005DD4E /* StarWarsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarWarsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		AC0C674228D0A0140005DD4E /* DTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTOs.swift; sourceTree = "<group>"; };
+		AC1A2B8328D0BD9500F3AD7C /* PeopleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				AC0C671828D09FF40005DD4E /* StarWarsApp.swift */,
 				AC0C674228D0A0140005DD4E /* DTOs.swift */,
 				AC0C671A28D09FF40005DD4E /* ContentView.swift */,
+				AC1A2B8328D0BD9500F3AD7C /* PeopleDetailView.swift */,
 				AC0C671C28D09FF50005DD4E /* Assets.xcassets */,
 				AC0C671E28D09FF50005DD4E /* Preview Content */,
 			);
@@ -260,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC1A2B8428D0BD9500F3AD7C /* PeopleDetailView.swift in Sources */,
 				AC0C674328D0A0140005DD4E /* DTOs.swift in Sources */,
 				AC0C671B28D09FF40005DD4E /* ContentView.swift in Sources */,
 				AC0C671928D09FF40005DD4E /* StarWarsApp.swift in Sources */,

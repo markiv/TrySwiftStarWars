@@ -8,14 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var people: People?
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        if let people {
+            List {
+                Text(people.name)
+            }
+        } else {
+            ProgressView("Loading...")
+                .task {
+                    do {
+                        let (data, _) = try await URLSession.shared
+                            .data(from: URL(string: "https://swapi.dev/api/people/1/")!)
+                        people = try JSONDecoder().decode(People.self, from: data)
+                    } catch {
+                        print(error)
+                    }
+                }
         }
-        .padding()
     }
 }
 

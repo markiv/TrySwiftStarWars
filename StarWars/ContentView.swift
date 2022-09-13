@@ -8,37 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var people: People?
+    @State private var page: PeoplePage?
 
     var body: some View {
-        if let people {
+        if let page {
             List {
-                Text(people.name)
+                ForEach(page.results) { people in
+                    Text(people.name)
+                }
             }
         } else {
             ProgressView("Loading...")
                 .task {
                     do {
-                        people = try await People(from: URL(string: "https://swapi.dev/api/people/1/")!)
+                        page = try await PeoplePage(from: URL(string: "https://swapi.dev/api/people")!)
                     } catch {
                         print(error)
                     }
                 }
         }
-    }
-}
-
-extension Decodable {
-    init(from request: URLRequest) async throws {
-        let (data, response) = try await URLSession.shared.data(for: request)
-        if let response = response as? HTTPURLResponse, response.statusCode >= 400 {
-            throw URLError(.badServerResponse)
-        }
-        self = try JSONDecoder().decode(Self.self, from: data)
-    }
-
-    init(from url: URL) async throws {
-        try await self.init(from: URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad))
     }
 }
 

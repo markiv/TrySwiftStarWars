@@ -17,3 +17,30 @@ struct People: Decodable {
     let created, edited: String
     let url: URL
 }
+
+struct PeoplePage: Decodable {
+    let count: Int
+    let next: URL?
+    let previous: URL?
+    let results: [People]
+}
+
+extension People: Identifiable {
+    var id: URL {
+        url
+    }
+}
+
+extension Decodable {
+    init(from request: URLRequest) async throws {
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let response = response as? HTTPURLResponse, response.statusCode >= 400 {
+            throw URLError(.badServerResponse)
+        }
+        self = try JSONDecoder().decode(Self.self, from: data)
+    }
+
+    init(from url: URL) async throws {
+        try await self.init(from: URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad))
+    }
+}

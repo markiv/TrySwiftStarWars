@@ -32,10 +32,10 @@ struct ContentView: View {
 }
 
 extension ContentView {
-    @MainActor class ViewModel: ObservableObject {
-        @Published public private(set) var people = [People]()
+    class ViewModel: ObservableObject {
+        @MainActor @Published public private(set) var people = [People]()
 
-        func fetchAllPages() async {
+        nonisolated func fetchAllPages() async {
             do {
                 var people = [People]()
                 var url: URL? = "https://swapi.dev/api/people"
@@ -45,7 +45,10 @@ extension ContentView {
                     people += page.results
                     url = page.next
                 }
-                self.people = people
+                let temp = people // to avoid capturing the mutable array
+                Task { @MainActor in
+                    self.people = temp
+                }
             } catch {
                 print(error)
             }

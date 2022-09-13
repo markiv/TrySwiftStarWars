@@ -34,8 +34,7 @@ struct PeopleDetailView: View {
             try? await withThrowingTaskGroup(of: Film.self) { group in
                 people.films.forEach { url in
                     group.addTask {
-                        async let film = Film(from: url)
-                        return try await film
+                        try await Film(from: url)
                     }
                 }
                 for try await film in group {

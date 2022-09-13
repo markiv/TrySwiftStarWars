@@ -30,7 +30,10 @@ struct ContentView: View {
 
 extension Decodable {
     init(from url: URL) async throws {
-        let (data, _) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await URLSession.shared.data(from: url)
+        if let response = response as? HTTPURLResponse, response.statusCode >= 400 {
+            throw URLError(.badServerResponse)
+        }
         self = try JSONDecoder().decode(Self.self, from: data)
     }
 }

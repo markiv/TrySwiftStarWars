@@ -44,3 +44,9 @@ extension Decodable {
         try await self.init(from: URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad))
     }
 }
+
+extension URL: ExpressibleByStringLiteral {
+    public init(stringLiteral value: StringLiteralType) {
+        self.init(string: value)!
+    }
+}

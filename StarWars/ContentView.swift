@@ -8,24 +8,45 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var page: PeoplePage?
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
-        if let page {
-            List {
-                ForEach(page.results) { people in
-                    Text(people.name)
-                }
-            }
-        } else {
-            ProgressView("Loading...")
-                .task {
-                    do {
-                        page = try await PeoplePage(from: URL(string: "https://swapi.dev/api/people")!)
-                    } catch {
-                        print(error)
+        NavigationStack {
+            if !viewModel.people.isEmpty {
+                List {
+                    ForEach(viewModel.people) { people in
+                        Text(people.name)
                     }
                 }
+                .navigationTitle("Star Wars People")
+            } else {
+                ProgressView("Loading...")
+                    .task {
+                        await viewModel.fetchAllPages()
+                    }
+            }
+        }
+    }
+}
+
+extension ContentView {
+    @MainActor class ViewModel: ObservableObject {
+        @Published public private(set) var people = [People]()
+
+        func fetchAllPages() async {
+            do {
+                var people = [People]()
+                var url: URL? = "https://swapi.dev/api/people"
+                while url != nil {
+                    print("Fetching", url!)
+                    let page = try await PeoplePage(from: url!)
+                    people += page.results
+                    url = page.next
+                }
+                self.people = people
+            } catch {
+                print(error)
+            }
         }
     }
 }

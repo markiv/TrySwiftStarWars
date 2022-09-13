@@ -7,7 +7,7 @@
 
 import Foundation
 
-// https://swapi.dev/api/people/1/
+// See https://swapi.dev/api/people/1/
 struct People: Decodable {
     let name: String
     let height, mass, hairColor: String?
@@ -18,6 +18,7 @@ struct People: Decodable {
     let url: URL
 }
 
+// See https://swapi.dev/api/people/
 struct PeoplePage: Decodable {
     let count: Int
     let next: URL?
@@ -25,7 +26,8 @@ struct PeoplePage: Decodable {
     let results: [People]
 }
 
-struct Film: Codable {
+// See https://swapi.dev/api/films/1/
+struct Film: Decodable {
     let title: String
     let created, director, edited: String
     let episodeId: Int

@@ -7,6 +7,14 @@
 
 import Foundation
 
+extension JSONDecoder {
+    static let snakeCaseDecoder: JSONDecoder = {
+        let this = JSONDecoder()
+        this.keyDecodingStrategy = .convertFromSnakeCase
+        return this
+    }()
+}
+
 extension Decodable {
     /// Generic asynchronous initializer for any Decodable, requesting and decoding JSON.
     init(from request: URLRequest) async throws {
@@ -14,13 +22,11 @@ extension Decodable {
         if let response = response as? HTTPURLResponse, response.statusCode >= 400 {
             throw URLError(.badServerResponse)
         }
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        self = try decoder.decode(Self.self, from: data)
+        self = try JSONDecoder.snakeCaseDecoder.decode(Self.self, from: data)
     }
 
     init(from url: URL) async throws {
-        // Crank up the caching to the max
+        // Use cached responses as much as possible, to avoid hitting API rate limits.
         try await self.init(from: URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad))
     }
 }
@@ -61,7 +67,7 @@ extension Collection where Element == URL {
                 }
             }
             for await value in group {
-                if let value = value {
+                if let value {
                     results.append(value)
                 }
             }
@@ -71,18 +77,20 @@ extension Collection where Element == URL {
 }
 
 extension URLSession {
-    // Backport
-    @available(iOS, deprecated: 15, message: "This extension is no longer needed")
+    /// A backport of `data(for request: ...) async...` for older platform versions.
+    @available(iOS, deprecated: 15.0, message: "This backport is no longer needed. Use URLSession's built-in method.")
     func data(from url: URL) async throws -> (Data, URLResponse) {
         try await withCheckedThrowingContinuation { continuation in
             dataTask(with: url) { data, response, error in
-                if let data = data, let response = response as? HTTPURLResponse, response.statusCode < 400 {
+                if let response = response as? HTTPURLResponse, response.statusCode >= 400 {
+                    continuation.resume(throwing: URLError(.badServerResponse))
+                } else if let data, let response {
                     continuation.resume(returning: (data, response))
                 } else {
-                    continuation.resume(throwing: error ?? URLError(.badServerResponse))
+                    continuation.resume(throwing: error ?? URLError(.unknown))
                 }
             }
-            .resume()
+            .resume() // Start the URLSessionTask
         }
     }
 }
@@ -93,9 +101,7 @@ extension Decodable {
     init(mock name: String) {
         let url = Bundle.main.url(forResource: name, withExtension: "json")!
         let data = try! Data(contentsOf: url)
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        self = try! decoder.decode(Self.self, from: data)
+        self = try! JSONDecoder.snakeCaseDecoder.decode(Self.self, from: data)
     }
 }
 #endif

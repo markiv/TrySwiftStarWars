@@ -21,6 +21,7 @@
 		ACB3B5F928D0F78E00FDFD3C /* ListDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B5F828D0F78E00FDFD3C /* ListDetailItem.swift */; };
 		ACB3B5FB28D0F90400FDFD3C /* people1.json in Resources */ = {isa = PBXBuildFile; fileRef = ACB3B5FA28D0F90400FDFD3C /* people1.json */; };
 		ACB3B5FD28D0F9CF00FDFD3C /* film1.json in Resources */ = {isa = PBXBuildFile; fileRef = ACB3B5FC28D0F9CF00FDFD3C /* film1.json */; };
+		ACB3B5FF28D11C5100FDFD3C /* OpeningCrawlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B5FE28D11C5100FDFD3C /* OpeningCrawlView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		ACB3B5F828D0F78E00FDFD3C /* ListDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailItem.swift; sourceTree = "<group>"; };
 		ACB3B5FA28D0F90400FDFD3C /* people1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = people1.json; sourceTree = "<group>"; };
 		ACB3B5FC28D0F9CF00FDFD3C /* film1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = film1.json; sourceTree = "<group>"; };
+		ACB3B5FE28D11C5100FDFD3C /* OpeningCrawlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningCrawlView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				AC0C674228D0A0140005DD4E /* DTOs.swift */,
 				AC0C671A28D09FF40005DD4E /* ContentView.swift */,
 				AC1A2B8328D0BD9500F3AD7C /* PeopleDetailView.swift */,
+				ACB3B5FE28D11C5100FDFD3C /* OpeningCrawlView.swift */,
 				ACB3B5F628D0F71900FDFD3C /* FilmDetailView.swift */,
 				ACB3B5F828D0F78E00FDFD3C /* ListDetailItem.swift */,
 				ACB3B5F428D0F19600FDFD3C /* Extensions.swift */,
@@ -285,6 +288,7 @@
 				AC1A2B8428D0BD9500F3AD7C /* PeopleDetailView.swift in Sources */,
 				AC0C674328D0A0140005DD4E /* DTOs.swift in Sources */,
 				ACB3B5F928D0F78E00FDFD3C /* ListDetailItem.swift in Sources */,
+				ACB3B5FF28D11C5100FDFD3C /* OpeningCrawlView.swift in Sources */,
 				AC0C671B28D09FF40005DD4E /* ContentView.swift in Sources */,
 				AC0C671928D09FF40005DD4E /* StarWarsApp.swift in Sources */,
 			);

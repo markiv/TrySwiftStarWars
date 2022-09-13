@@ -21,7 +21,7 @@ struct FilmDetailView: View {
             }
             Section {
                 NavigationLink {
-                    Text("Under Construction")
+                    OpeningCrawlView(film: film)
                 } label: {
                     Text("Opening Crawl")
                 }

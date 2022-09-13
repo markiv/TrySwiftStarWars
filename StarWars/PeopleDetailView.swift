@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PeopleDetailView: View {
     let people: People
+    @State private var films: [Film]?
 
     var body: some View {
         List {
@@ -19,8 +20,26 @@ struct PeopleDetailView: View {
                 DetailItem(label: "Eye Color", value: people.eyeColor)
                 DetailItem(label: "Skin Color", value: people.skinColor)
             }
+            if let films, !films.isEmpty {
+                Section("Films") {
+                    ForEach(films) { film in
+                        Text(film.title)
+                    }
+                }
+            }
         }
         .navigationTitle(people.name)
+        .task {
+            async let film0 = Film(from: people.films[0])
+            async let film1 = Film(from: people.films[1])
+            async let film2 = Film(from: people.films[2])
+            do {
+                films = try await [film0, film1, film2]
+                print(self.films)
+            } catch {
+                print(error)
+            }
+        }
     }
 }
 

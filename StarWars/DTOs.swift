@@ -52,7 +52,9 @@ extension Decodable {
         if let response = response as? HTTPURLResponse, response.statusCode >= 400 {
             throw URLError(.badServerResponse)
         }
-        self = try JSONDecoder().decode(Self.self, from: data)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        self = try decoder.decode(Self.self, from: data)
     }
 
     init(from url: URL) async throws {

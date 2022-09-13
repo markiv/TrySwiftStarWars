@@ -70,8 +70,26 @@ extension Collection where Element == URL {
     }
 }
 
+extension URLSession {
+    // Backport
+    @available(iOS, deprecated: 15, message: "This extension is no longer needed")
+    func data(from url: URL) async throws -> (Data, URLResponse) {
+        try await withCheckedThrowingContinuation { continuation in
+            dataTask(with: url) { data, response, error in
+                if let data = data, let response = response as? HTTPURLResponse, response.statusCode < 400 {
+                    continuation.resume(returning: (data, response))
+                } else {
+                    continuation.resume(throwing: error ?? URLError(.badServerResponse))
+                }
+            }
+            .resume()
+        }
+    }
+}
+
 #if DEBUG
 extension Decodable {
+    /// Initializes any Decodable from a JSON mock in the main bundle.
     init(mock name: String) {
         let url = Bundle.main.url(forResource: name, withExtension: "json")!
         let data = try! Data(contentsOf: url)
